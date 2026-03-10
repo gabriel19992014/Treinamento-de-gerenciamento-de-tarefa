@@ -1,11 +1,11 @@
-// Centralizando seletores
+// Seletores centralizados
 const elements = {
+  form: document.getElementById("formTarefa"),
   tarefa: document.getElementById("tarefa"),
   descricao: document.getElementById("descricao"),
   data: document.getElementById("data"),
   prioridade: document.getElementById("prioridade"),
   dataArea: document.getElementById("dataArea"),
-  adicionar: document.getElementById("adicionar"),
 };
 
 // Função utilitária para criar elementos
@@ -19,8 +19,6 @@ function criarElemento(tag, texto = "", classe = "") {
 // Função para montar uma tarefa
 function criarTarefa({ titulo, descricao, data, prioridade, concluida = false }) {
   const tarefaDiv = criarElemento("div", "", "tarefa");
-
-  // Adiciona classe de prioridade (urgente, importante, normal)
   tarefaDiv.classList.add(prioridade.toLowerCase());
 
   const tituloEl = criarElemento("h3", titulo);
@@ -28,7 +26,6 @@ function criarTarefa({ titulo, descricao, data, prioridade, concluida = false })
   const dataEl = criarElemento("p", `Vencimento: ${data}`);
   const prioridadeEl = criarElemento("p", `Prioridade: ${prioridade}`);
 
-  // Checkbox de conclusão
   const checkbox = criarElemento("input");
   checkbox.type = "checkbox";
   checkbox.checked = concluida;
@@ -39,20 +36,20 @@ function criarTarefa({ titulo, descricao, data, prioridade, concluida = false })
     salvarTarefas();
   });
 
-  // Botão de remover
   const btnRemover = criarElemento("button", "Remover");
   btnRemover.addEventListener("click", () => {
     tarefaDiv.remove();
     salvarTarefas();
   });
 
-  // Montagem final
   tarefaDiv.append(checkbox, tituloEl, descricaoEl, dataEl, prioridadeEl, btnRemover);
   elements.dataArea.appendChild(tarefaDiv);
 }
 
 // Função principal
-function adicionarTarefa() {
+function adicionarTarefa(e) {
+  e.preventDefault(); // evita recarregar a página
+
   const titulo = elements.tarefa.value.trim();
   const descricao = elements.descricao.value.trim();
   const data = elements.data.value.trim();
@@ -65,18 +62,12 @@ function adicionarTarefa() {
 
   criarTarefa({ titulo, descricao, data, prioridade });
   salvarTarefas();
-  limparCampos();
+
+  // Limpa todos os campos do formulário de uma vez
+  elements.form.reset();
 }
 
-// Função para limpar os inputs
-function limparCampos() {
-  elements.tarefa.value = "";
-  elements.descricao.value = "";
-  elements.data.value = "";
-  elements.prioridade.value = "Normal";
-}
-
-// Função para salvar tarefas no localStorage
+// Função para salvar tarefas
 function salvarTarefas() {
   const tarefas = [];
   document.querySelectorAll(".tarefa").forEach(tarefaDiv => {
@@ -98,8 +89,8 @@ function carregarTarefas() {
   tarefas.forEach(tarefa => criarTarefa(tarefa));
 }
 
-// Evento do botão
-elements.adicionar.addEventListener("click", adicionarTarefa);
+// Evento do formulário
+elements.form.addEventListener("submit", adicionarTarefa);
 
 // Carregar tarefas ao abrir a página
 window.addEventListener("load", carregarTarefas);

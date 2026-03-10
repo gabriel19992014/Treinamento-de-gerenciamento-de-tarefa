@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minha Lista de Tarefas</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <main class="container">
@@ -12,23 +13,32 @@
       <h1>Minha Lista de Tarefas</h1>
     </header>
 
+    <!-- Formulário semântico -->
     <section class="form-section">
-      <input type="text" id="tarefa" placeholder="Digite sua tarefa">
-      <input type="text" id="descricao" placeholder="Digite a descrição da tarefa">
-      <input type="date" id="data">
-      <select id="prioridade">
-        <option value="Urgente">Urgente</option>
-        <option value="Importante">Importante</option>
-        <option value="Normal" selected>Normal</option>
-      </select>
-      <button id="adicionar">Adicionar Tarefa</button>
+      <form id="formTarefa" class="form-section">
+  <label for="tarefa"></label>
+  <input type="text" id="tarefa" name="tarefa" placeholder="Digite sua tarefa" required>
+
+  <label for="descricao"></label>
+  <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição da tarefa" required>
+
+  <label for="data"></label>
+  <input type="date" id="data" name="data" required>
+
+  <label for="prioridade"></label>
+  <select id="prioridade" name="prioridade">
+    <option value="Urgente">Urgente</option>
+    <option value="Importante">Importante</option>
+    <option value="Normal" selected>Normal</option>
+  </select>
+
+  <button type="submit">Adicionar Tarefa</button>
+</form>
     </section>
 
     <section class="list-section">
       <div id="dataArea" class="dataBox"></div>
     </section>
   </main>
-
-  <script src="index.js"></script>
 </body>
 </html>
